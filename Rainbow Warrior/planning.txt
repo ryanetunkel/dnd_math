@@ -1,0 +1,122 @@
+
+Damage
+    - Name = enum?
+        - "Acid" = 1
+        - "Bludgeoning" = 2 - Included to add class in
+        - "Cold" = 3
+        - "Fire" = 4
+        - "Force" = 5
+        - "Lightning" = 6
+        - "Necrotic" = 7
+        - "Piercing" = 8
+            - "Poison" Not Included
+        - "Psychic" = 9
+        - "Radiant" = 10
+            - "Slashing" Not Included
+        - "Thunder" = 11
+
+
+Source Types (Make an enum?)
+    - Background
+    - Cantrip
+    - Class
+    - Concentration
+    - Feat
+    - Species
+
+
+Requirements()
+    - Must provide a damage type that is not already taken
+    - Additional Requirements based on Source Type
+
+
+
+Background
+    - Background Name = "Giant Foundling - Strike of the Giants: some damage_type"
+    - Damage
+    - Requirements()
+        - Must not already have a background
+
+
+Cantrip
+    - Name = str
+    - Damage
+    - Requirements()
+        - Must not already have a cantrip
+
+
+Class
+    - Name = str
+    - Level = int
+    - Subclass Options = [str] enum
+    - Options = [Damage]
+    - Requirements()
+        - Must not already have that class
+        - Must have enough remaining levels to take
+
+
+Concentration
+    - Name = str
+    - Damage
+    - Classes_that_can_get_this = {Class:Level}
+    - Requirements()
+        - Must not already have a concentration
+        - Must already have a class in its class list
+
+
+Feat
+    - Name
+    - Damage
+    - Requirements()
+        - Must have a class with a level % 4 that does not already have a feat
+
+
+Species
+    - Name
+    - Damage
+    - Options = Optional enum
+    - Requirements()
+        - Must not already have a species
+
+
+Available_Backgrounds = []
+Available_Cantrips = []
+Available_Classes = []
+Available_Concentrations = []
+Available_Feats = []
+Available Species = []
+
+
+Current Class list
+    - Classes = [Class] - will always start with Warlock Genie
+    - Total Levels - will be updated whenever a class is added
+    - Max Levels - Default = 20, for future testing try setting it to 14
+
+
+Feat list
+    - Feats = [Feat]
+
+
+Check for available levels()
+    - Checks that adding in the level of the current class does not exceed the level cap for the class list
+
+
+Current Source List
+    - Contains all sources currently being evaluated
+        - Background
+        - Cantrip
+        - Class list
+        - Concentration
+        - Feat list
+        - Species
+    - If it succesfully gains all 13 (11 minus poison and slashing) damage types, it is added to the master list
+
+
+Master Source List
+    - Contains all source lists that can have all damage types
+
+
+Traverse Sources()
+    - Moves through the source types
+    - Picks sequentially through the options given
+    - Appends the Current Source List as it moves through the source types
