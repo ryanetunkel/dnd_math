@@ -1,3 +1,5 @@
+Planned approach for creating this project
+
 
 Damage
     - Name = enum?
