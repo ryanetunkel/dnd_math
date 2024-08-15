@@ -109,7 +109,7 @@ Current Source List
         - Concentration
         - Feat list
         - Species
-    - If it succesfully gains all 13 (11 minus poison and slashing) damage types, it is added to the master list
+    - If it successfully gains all 13 (11 minus poison and slashing) damage types, it is added to the master list
 
 
 Master Source List
