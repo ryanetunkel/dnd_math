@@ -3,9 +3,9 @@ Planned steps to take when creating this project
 1. Hello World
 2. Have it step through source list but just with names, printing each as it goes (“Background”, “Cantrip”, etc.)
 3. Do the same with Damage types
---
 4. Make damage types an enum and print that
 5. Make a mockup list of sources and have it print it
+--
 6. Give each source in the list a level and have it add them up
 7. Make a list of sources into a dict
 8. Make a function that checks if a source in that list is already non-empty
