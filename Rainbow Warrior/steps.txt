@@ -1,0 +1,30 @@
+Planned steps to take when creating this project
+
+1. Hello World
+2. Have it step through source list but just with names, printing each as it goes (“Background”, “Cantrip”, etc.)
+3. Do the same with Damage types
+4. Make damage types an enum and print that
+5. Make a mockup list of sources and have it print it
+--
+6. Give each source in the list a level and have it add them up
+7. Make a list of sources into a dict
+8. Make a function that checks if a source in that list is already non-empty
+9. Make a function that uses the non-empty checker to run through a source list with 3 different options at each point
+10. Make a function that uses the options but goes through each one
+11. Make a class printer format that gets printed
+12. Make a function that prints off a class list
+13. Make a function that returns the total levels of a class list
+14. Do the same with concentration, cantrips, etc. This step will be a-f
+15. Give each source type its own attributes - maybe by making it a class
+16. Make functions for different specific requirements - need to have a class with a level % 4
+17. Make a current class list
+18. Make a current source list
+19. Make a current damages list (shows what damages have already been obtained)
+20. Make a function that checks if all given damage is already in the current damages list
+21. Make available lists of all options. This step will be a-f
+22. Make a master source list
+23. Make a function that traverses through one available list and uses the damage comparison
+    function the make sure it doesn’t already have that damage type
+24. Make a function that traverses through each available list
+25. Make a function that uses that function to traverse through each available list and record
+    them to the current source list, adds it to the master source list at the end, clears the current source list, and then continues traversing
