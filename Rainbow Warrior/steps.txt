@@ -5,11 +5,11 @@ Planned steps to take when creating this project
 3. Do the same with Damage types
 4. Make damage types an enum and print that
 5. Make a mockup list of sources and have it print it
---
 6. Give each source in the list a level and have it add them up
 7. Make a list of sources into a dict
 8. Make a function that checks if a source in that list is already non-empty
 9. Make a function that uses the non-empty checker to run through a source list with 3 different options at each point
+--
 10. Make a function that uses the options but goes through each one
 11. Make a class printer format that gets printed
 12. Make a function that prints off a class list

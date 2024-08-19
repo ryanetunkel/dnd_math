@@ -40,13 +40,47 @@ mockup_sources = {
         "Ranger": ("Swarmkeeper", (Damage_Type.PIERCING), 4), # Listed as 4 as will be increased by 1 from feat
         "Fighter": ("Rune", (Damage_Type.FIRE), 3),
     },
-    "Concentration": ("Zephyr Strike", Damage_Type.FORCE),
-    "Feats": [
-        ("Vital Sacrifice", (Damage_Type.NECROTIC)),
-        ("Gift of the Chromatic Dragon: Acid", (Damage_Type.ACID)),
-    ],
-    "Species": ("Aasimar: Radiant", (Damage_Type.RADIANT)),
+    "Concentration": {"Zephyr Strike": (Damage_Type.FORCE)},
+    "Feats": {
+        "Vital Sacrifice": (Damage_Type.NECROTIC),
+        "Gift of the Chromatic Dragon: Acid": (Damage_Type.ACID),
+    },
+    "Species": {"Aasimar: Radiant": (Damage_Type.RADIANT)},
     "Level": 14,
+}
+
+mockup_sources_missing_fields = {
+    "Background": {},
+    "Cantrip": {"Booming Blade": (Damage_Type.THUNDER)},
+    "Classes": {
+        "Warlock": ("Genie", (Damage_Type.BLUDGEONING), 1),
+        "Bard": ("Whispers", (Damage_Type.PSYCHIC), 4), # Listed as 4 as will be increased by 1 from feat
+        "Ranger": ("Swarmkeeper", (Damage_Type.PIERCING), 4), # Listed as 4 as will be increased by 1 from feat
+        "Fighter": ("Rune", (Damage_Type.FIRE), 3),
+    },
+    "Concentration": {},
+    "Feats": {
+        "Vital Sacrifice": (Damage_Type.NECROTIC),
+        "Gift of the Chromatic Dragon: Acid": (Damage_Type.ACID),
+    },
+    "Species": {},
+    "Level": 14,
+}
+
+mockup_sources_no_filled_fields = {
+    "Background": {},
+    "Cantrip": {},
+    "Classes": {},
+    "Concentration": {},
+    "Feats": {},
+    "Species": {},
+    "Level": 14,
+}
+
+mockup_master_list = {
+    0: mockup_sources,
+    1: mockup_sources_missing_fields,
+    2: mockup_sources_no_filled_fields,
 }
 
 mockup_classes_dict = {
@@ -66,12 +100,33 @@ def add_class_levels(class_dict: dict) -> int:
     return levels
 
 
+def check_if_source_is_empty(dictionary: dict, source_name: str) -> bool:
+    return dictionary[source_name] == {}
+
+
+def check_which_sources_are_empty(dictionary: dict) -> dict:
+    sources_empty = {}
+    for source_name in dictionary.keys():
+        if source_name != "Level":
+            sources_empty[source_name] = check_if_source_is_empty(dictionary,source_name)
+    return sources_empty
+
+
+def check_which_dicts_are_empty(master_source_list: dict[dict]) -> dict[dict]:
+    master_source_list_empties = {}
+    for source_list_name in master_source_list.keys():
+        master_source_list_empties[source_list_name] = check_which_sources_are_empty(master_source_list[source_list_name])
+    return master_source_list_empties
+
 def run():
     print_source_list = False
     print_damage_types_list = False
     print_damage_types_enum = False
     pprint_mockup_sources_one_dict = False
-    add_class_levels_from_mockup_dict = True
+    add_class_levels_from_mockup_dict = False
+    check_empty_one_source_from_mockup_dict = False
+    check_empty_all_sources_from_mockup_dict = False
+    check_empty_all_dicts_in_master_dict = True
 
     # Printing 1st Draft Source List
     if print_source_list:
@@ -103,5 +158,19 @@ def run():
         levels = add_class_levels(mockup_classes_dict)
         print(levels)
 
+    # Printing if a source is empty from mockup dict
+    if check_empty_one_source_from_mockup_dict:
+        source_empty = check_if_source_is_empty(mockup_sources,"Cantrip")
+        print(f"This should be False: {source_empty}")
+
+    # Printing if source list is empty form mockup dict
+    if check_empty_all_sources_from_mockup_dict:
+        sources_empty = check_which_sources_are_empty(mockup_sources)
+        pprint(sources_empty)
+
+    # Printing if master source list is empty from mockup master list
+    if check_empty_all_dicts_in_master_dict:
+        masters_empty = check_which_dicts_are_empty(mockup_master_list)
+        pprint(masters_empty)
 
 run()
