@@ -10,6 +10,7 @@ class Dnd_Class():
         self.class_name = str(_class_type.name).title()
         self.subclass = Dnd_Subclass(_class_type.value,self._level)
         self.subclass_options = self.subclass.subclass_options
+        self.chosen_subclass = None
 # TODO: Add in clause for taking a class not including a subclass,
 # make sure to leave option for picking subclass in future and that
 # picking one but getting somethign else that also has it doesn't override
