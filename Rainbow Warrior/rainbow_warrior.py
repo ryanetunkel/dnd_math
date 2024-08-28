@@ -196,24 +196,27 @@ def pick_source_option(
     multiple_damage_options = (len(damage_options) >= 2)
 
     empty_slot = not current_source_dict.get(source_type_name) or not current_source_subdicts.get(available_source_name)
+    if not empty_slot:
+        empty_subclass = not current_source_subdicts.get(available_source_name).get(subclass_name)
 
-    if success:=(empty_slot or (not current_source_subdicts.get(available_source_name).get(subclass_name))):
-        # if source_type_name != "Classes":
-        #     current_source_dict.get(source_type_name).update({available_source_name: available_source_attributes})
-        # else:
-        #     current_source_dict.get(source_type_name).update({available_source_name: {subclass_name: available_source_attributes}})
-        current_source_dict.get(source_type_name).update({available_source_name: available_source_attributes})
-        if source_type_name == "Classes":
-            current_source_dict.get(source_type_name).get(available_source_name).update({subclass_name: available_source_attributes})
-
-
+    if success:=(empty_slot or empty_subclass):
+        if source_type_name != "Classes":
+            current_source_dict.get(source_type_name).update({available_source_name: available_source_attributes})
+            # print(f"1111- available_source_name dict: {current_source_dict.get(source_type_name).get(available_source_name)}")
+        elif source_type_name == "Classes":
+            if empty_slot:
+                current_source_dict.get(source_type_name).update({available_source_name: {subclass_name: available_source_attributes[subclass_name]}})
+            elif empty_subclass:
+                current_source_dict.get(source_type_name).get(available_source_name).update({subclass_name: available_source_attributes[subclass_name]})
+            # print(f"2222- available_source_name dict: {current_source_dict.get(source_type_name).get(available_source_name).get(subclass_name)[0]}")
         if valid_damage_option and multiple_damage_options:
             if source_type_name not in ["Concentration","Classes"]:
-                current_source_dict.get(source_type_name).update({available_source_name: (damage_type)}) # *******I think the bug is here?******* the bug is that blood hunter is getting everything from official source options instead of just the chosen subclass and damage type
+                current_source_dict.get(source_type_name).update({available_source_name: (damage_type,)})
             elif source_type_name == "Concentration":
-                current_source_dict.get(source_type_name).get(available_source_name)[0] = (damage_type)
+                current_source_dict.get(source_type_name).get(available_source_name)[0] = (damage_type,)
             elif source_type_name == "Classes": # Multiple subclasses for one class that can be taken together (non-subclass specific features)
-                current_source_dict.get(source_type_name).get(available_source_name).get(subclass_name)[0] = (damage_type)
+                level = current_source_dict.get(source_type_name).get(available_source_name).get(subclass_name)[1]
+                current_source_dict.get(source_type_name).get(available_source_name).update({subclass_name:((damage_type,),level)})
 
     return success
 
@@ -321,11 +324,13 @@ def run():
             damage_type=Damage_Type.COLD,
             subclass_name="None_2",
         )
-        pprint(f"Successful?: {successful}")
-        pprint(f"Editable post function: {mockup_sources_no_filled_fields_editable}")
+        print(f"---Successful?---: {successful}")
+        pprint(f"---Editable post function---:\n{mockup_sources_no_filled_fields_editable}")
+        none_2 = mockup_sources_no_filled_fields_editable["Classes"]["Blood Hunter"]["None_2"]
+        print(f"---None_2---:\n{none_2}")
         mockup_sources_no_filled_fields_editable = {}
         mockup_sources_no_filled_fields_editable = mockup_sources_no_filled_fields
-        pprint(f"Editable post cleanup: {mockup_sources_no_filled_fields_editable}")
+        pprint(f"---Editable post cleanup---:\n{mockup_sources_no_filled_fields_editable}")
 
 
 run()
