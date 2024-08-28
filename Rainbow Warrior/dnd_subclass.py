@@ -8,7 +8,7 @@ class Dnd_Subclass():
         self._class_type = _class_type
         self._level = _level
         self.subclass_options = {}
-        self.subclass_name = ""
+        self.subclass_name = "" # Is interim value. An actual class with no given subclass has the subclass "None"
         match self._class_type:
             case Class_Type.NONE:
                 self.subclass_options = {}
