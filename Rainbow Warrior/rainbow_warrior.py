@@ -172,6 +172,20 @@ def pick_source_option(
 ) -> bool:
     # Don't need to check if available_sources have available source two tiers of dicts deep for feats and classes, already accounted for
     # Need to make sure reqs other than emptiness are accounted for outside of this function
+    # Non classes/feats format:
+    # source_type_name = {
+    #     available_source_name: ()  # Concentrations have class reqs, means their tuple is actually like this: ((),{})
+    # } # Feats can have multiple available_source_name: () 's
+    # Classes format:
+    # source_type_name = {
+    #     available_source_name: {
+    #         subclass_name: ((Damage_Type,Damage_Type,),int),
+    #         subclass_name: ((Damage_Type,Damage_Type,),int),
+    #     },
+    #     available_source_name: {
+    #         subclass_name: ((Damage_Type,),int),
+    #     },
+    # }
 
     available_source_subdicts = available_sources.get(source_type_name)
     available_source_attributes = available_source_subdicts.get(available_source_name)
@@ -185,48 +199,19 @@ def pick_source_option(
     empty_subclass = not current_source_subdicts.get(available_source_name).get(subclass_name)
 
     if success:=(empty_slot != empty_subclass):
-        # Non classes/feats format:
-        # source_type_name = {
-        #     available_source_name: ()  # Concentrations have class reqs, means their tuple is actually like this: ((),{})
-        # } # Feats can have multiple available_source_name: () 's
-        if source_type_name != "Classes":
-            current_source_dict.get(source_type_name).update({available_source_name: available_source_attributes})
-            if valid_damage_option and multiple_damage_options:
-                if source_type_name != "Concentration":
-                    current_source_dict.get(source_type_name).update({available_source_name: (damage_type)})
-                else:
-                    current_source_dict.get(source_type_name).get(available_source_name)[0] = (damage_type)
-
-
         if source_type_name != "Classes":
             current_source_dict.get(source_type_name).update({available_source_name: available_source_attributes})
         else:
             current_source_dict.get(source_type_name).update({available_source_name: {subclass_name: available_source_attributes}})
+
         if valid_damage_option and multiple_damage_options:
-            if source_type_name != "Concentration":
+            if source_type_name not in ["Concentration","Classes"]:
                 current_source_dict.get(source_type_name).update({available_source_name: (damage_type)})
-            else:
+            elif source_type_name == "Concentration":
                 current_source_dict.get(source_type_name).get(available_source_name)[0] = (damage_type)
+            elif source_type_name == "Classes": # Multiple subclasses for one class that can be taken together (non-subclass specific features)
+                    current_source_dict.get(source_type_name).get(available_source_name).get(subclass_name)[0] = (damage_type)
 
-
-        if source_type_name == "Classes":
-            if valid_damage_option and multiple_damage_options:  # Multiple subclasses for one class that can be taken together (non-subclass specific features)
-                current_source_dict.get(source_type_name).get(available_source_name).get(subclass_name)[0] = (damage_type)
-
-        # Classes format:
-        # source_type_name = {
-        #     available_source_name: {
-        #         subclass_name: ((Damage_Type,Damage_Type,),int),
-        #         subclass_name: ((Damage_Type,Damage_Type,),int),
-        #     },
-        #     available_source_name: {
-        #         subclass_name: ((Damage_Type,),int),
-        #     },
-        # }
-        if source_type_name == "Classes":
-            current_source_dict.get(source_type_name).update({available_source_name: {subclass_name: available_source_attributes}})
-            if valid_damage_option and multiple_damage_options:  # Multiple subclasses for one class that can be taken together (non-subclass specific features)
-                current_source_dict.get(source_type_name).get(available_source_name).get(subclass_name)[0] = (damage_type)
     return success
 
 
