@@ -209,7 +209,7 @@ def pick_source_option(
 
         if valid_damage_option and multiple_damage_options:
             if source_type_name not in ["Concentration","Classes"]:
-                current_source_dict.get(source_type_name).update({available_source_name: (damage_type)}) # *******I think the bug is here?*******
+                current_source_dict.get(source_type_name).update({available_source_name: (damage_type)}) # *******I think the bug is here?******* the bug is that blood hunter is getting everything from official source options instead of just the chosen subclass and damage type
             elif source_type_name == "Concentration":
                 current_source_dict.get(source_type_name).get(available_source_name)[0] = (damage_type)
             elif source_type_name == "Classes": # Multiple subclasses for one class that can be taken together (non-subclass specific features)
