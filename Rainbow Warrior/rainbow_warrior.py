@@ -196,21 +196,24 @@ def pick_source_option(
     multiple_damage_options = (len(damage_options) >= 2)
 
     empty_slot = not current_source_dict.get(source_type_name) or not current_source_subdicts.get(available_source_name)
-    empty_subclass = not current_source_subdicts.get(available_source_name).get(subclass_name)
 
-    if success:=(empty_slot != empty_subclass):
-        if source_type_name != "Classes":
-            current_source_dict.get(source_type_name).update({available_source_name: available_source_attributes})
-        else:
-            current_source_dict.get(source_type_name).update({available_source_name: {subclass_name: available_source_attributes}})
+    if success:=(empty_slot or (not current_source_subdicts.get(available_source_name).get(subclass_name))):
+        # if source_type_name != "Classes":
+        #     current_source_dict.get(source_type_name).update({available_source_name: available_source_attributes})
+        # else:
+        #     current_source_dict.get(source_type_name).update({available_source_name: {subclass_name: available_source_attributes}})
+        current_source_dict.get(source_type_name).update({available_source_name: available_source_attributes})
+        if source_type_name == "Classes":
+            current_source_dict.get(source_type_name).get(available_source_name).update({subclass_name: available_source_attributes})
+
 
         if valid_damage_option and multiple_damage_options:
             if source_type_name not in ["Concentration","Classes"]:
-                current_source_dict.get(source_type_name).update({available_source_name: (damage_type)})
+                current_source_dict.get(source_type_name).update({available_source_name: (damage_type)}) # *******I think the bug is here?*******
             elif source_type_name == "Concentration":
                 current_source_dict.get(source_type_name).get(available_source_name)[0] = (damage_type)
             elif source_type_name == "Classes": # Multiple subclasses for one class that can be taken together (non-subclass specific features)
-                    current_source_dict.get(source_type_name).get(available_source_name).get(subclass_name)[0] = (damage_type)
+                current_source_dict.get(source_type_name).get(available_source_name).get(subclass_name)[0] = (damage_type)
 
     return success
 
